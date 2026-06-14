@@ -542,7 +542,7 @@ var _splashGoneTimer=null;
 var _permDoneAt=-9999;
 function _dbg(msg){var d=document.getElementById('_dbg');if(!d){d=document.createElement('div');d.id='_dbg';d.style.cssText='position:fixed;top:60px;left:8px;right:8px;background:rgba(0,0,0,.9);color:#0f0;font:10px monospace;padding:6px 8px;z-index:99999;border-radius:8px;max-height:180px;overflow-y:auto;pointer-events:none';document.body.appendChild(d);}var ln=document.createElement('div');var s=document.getElementById('splashOverlay');var sState=s?(s.classList.contains('gone')?'GONE':s.classList.contains('hide')?'HIDE':'SHOW'):'NULL';ln.textContent=new Date().toISOString().slice(11,19)+' [splash:'+sState+' perm:'+(Date.now()-_permDoneAt)+'ms] '+msg;d.appendChild(ln);d.scrollTop=d.scrollHeight;}
 function _overlayAllowed(){if(Date.now()-_permDoneAt<2500)return false;var s=document.getElementById('splashOverlay');return !s||s.classList.contains('gone');}
-function openReels(){_dbg('openReels → allowed='+_overlayAllowed());if(!_overlayAllowed())return;var o=document.getElementById('reelsOverlay');if(!o)return;o.classList.remove('loaded');o.classList.add('open');clearTimeout(o._t);o._t=setTimeout(function(){o.classList.add('loaded');},1600);}
+function openReels(){_dbg('openReels → allowed='+_overlayAllowed());if(!_overlayAllowed())return;var o=document.getElementById('reelsOverlay');if(!o)return;o.style.display='';o.classList.remove('loaded');o.classList.add('open');clearTimeout(o._t);o._t=setTimeout(function(){o.classList.add('loaded');},1600);}
 function closeReels(e){if(e)e.stopPropagation();var o=document.getElementById('reelsOverlay');if(o){o.classList.remove('open');['bsOverlay','verdictOverlay'].forEach(id=>{var el=document.getElementById(id);if(el)el.classList.remove('open');});}}
 // Dot animation for loading text
 function startDotAnim(){
@@ -556,13 +556,13 @@ function stopDotAnim(){
   var el=document.querySelector('.bs-analyzing-title');
   if(el&&el._dotAnim){clearInterval(el._dotAnim);el._dotAnim=null;el.textContent='콘텐츠 분석 중.';}
 }
-function openBs(){if(!_overlayAllowed())return;var bs=document.getElementById('bsOverlay');if(!bs)return;document.getElementById('bsLoading').classList.remove('bs-hidden');document.getElementById('bsResults').classList.add('bs-hidden');bs.classList.add('open');startDotAnim();clearTimeout(bs._t);bs._t=setTimeout(()=>{stopDotAnim();document.getElementById('bsLoading').classList.add('bs-hidden');document.getElementById('bsResults').classList.remove('bs-hidden');},2000);}
+function openBs(){if(!_overlayAllowed())return;var bs=document.getElementById('bsOverlay');if(bs)bs.style.display='';if(!bs)return;document.getElementById('bsLoading').classList.remove('bs-hidden');document.getElementById('bsResults').classList.add('bs-hidden');bs.classList.add('open');startDotAnim();clearTimeout(bs._t);bs._t=setTimeout(()=>{stopDotAnim();document.getElementById('bsLoading').classList.add('bs-hidden');document.getElementById('bsResults').classList.remove('bs-hidden');},2000);}
 function closeBs(e){if(e)e.stopPropagation();var bs=document.getElementById('bsOverlay');if(bs)bs.classList.remove('open');}
 function toggleBsDetail(){var d=document.getElementById('bsDetail');var b=document.getElementById('bsAccordionBtn');if(d){d.classList.toggle('open');b.classList.toggle('open');}}
 function openVerdict(){var v=document.getElementById('verdictOverlay');if(v)v.classList.add('open');}
 function closeVerdict(){var v=document.getElementById('verdictOverlay');if(v)v.classList.remove('open');}
-// Watch reelsOverlay class changes
-(function(){var ro=document.getElementById('reelsOverlay');if(!ro)return;new MutationObserver(function(m){m.forEach(function(r){if(r.attributeName==='class')_dbg('reels class='+ro.className.trim());});}).observe(ro,{attributes:true});_dbg('INIT reels.open='+ro.classList.contains('open'));})();
+// Watch reelsOverlay class changes + force hide on init
+(function(){var ro=document.getElementById('reelsOverlay');if(!ro)return;ro.style.display='none';new MutationObserver(function(m){m.forEach(function(r){if(r.attributeName==='class')_dbg('reels class='+ro.className.trim()+' display='+ro.style.display);});}).observe(ro,{attributes:true});_dbg('INIT reels.open='+ro.classList.contains('open')+' display='+ro.style.display);})();
 // Splash auto-dismiss
 (function(){
   var s=document.getElementById('splashOverlay');
@@ -596,7 +596,7 @@ function completePerm(){
   if(p){p.style.display='none';p.classList.remove('active');}
   if(l){l.style.display='none';l.classList.remove('active');}
   ['reelsOverlay','bsOverlay','verdictOverlay'].forEach(function(id){
-    var el=document.getElementById(id);if(el){_dbg(id+' wasOpen='+el.classList.contains('open'));el.classList.remove('open','loaded');}
+    var el=document.getElementById(id);if(el){_dbg(id+' wasOpen='+el.classList.contains('open'));el.classList.remove('open','loaded');el.style.display='none';}
   });
   document.querySelectorAll('.page-overlay').forEach(function(el){el.classList.remove('active');});
   if(s){
