@@ -392,21 +392,21 @@
         <div class="notif-card" id="freqCard">
           <div class="freq-row selected" onclick="selectFreq(0)" data-freq="0">
             <div class="freq-row-left">
-              <img src="assets/notif-freq-icon.svg" style="width:14px;height:16px;filter:invert(56%) sepia(68%) saturate(400%) hue-rotate(148deg)" alt=""/>
+              <img src="assets/notif-freq-icon.svg" class="freq-icon" style="width:14px;height:16px;filter:invert(56%) sepia(68%) saturate(400%) hue-rotate(148deg)" alt=""/>
               <span class="freq-row-label" style="color:rgb(15,20,24)">즉시 (실시간)</span>
             </div>
             <img src="assets/notif-check.svg" class="freq-check" style="width:20px;height:20px;opacity:1" alt=""/>
           </div>
           <div class="freq-row " onclick="selectFreq(1)" data-freq="1">
             <div class="freq-row-left">
-              <img src="assets/notif-freq-icon.svg" style="width:14px;height:16px;filter:invert(60%) sepia(0%) saturate(0%)" alt=""/>
+              <img src="assets/notif-freq-daily.svg" class="freq-icon" style="width:18px;height:18px;filter:invert(60%) sepia(0%) saturate(0%)" alt=""/>
               <span class="freq-row-label" style="color:rgb(15,20,24)">하루 1회</span>
             </div>
             <img src="assets/notif-check.svg" class="freq-check" style="width:20px;height:20px;opacity:0" alt=""/>
           </div>
           <div class="freq-row " onclick="selectFreq(2)" data-freq="2">
             <div class="freq-row-left">
-              <img src="assets/notif-freq-icon.svg" style="width:14px;height:16px;filter:invert(60%) sepia(0%) saturate(0%)" alt=""/>
+              <img src="assets/notif-freq-weekly.svg" class="freq-icon" style="width:16px;height:18px;filter:invert(60%) sepia(0%) saturate(0%)" alt=""/>
               <span class="freq-row-label" style="color:rgb(15,20,24)">주간 요약</span>
             </div>
             <img src="assets/notif-check.svg" class="freq-check" style="width:20px;height:20px;opacity:0" alt=""/>
@@ -540,7 +540,7 @@ document.addEventListener('click',function(e){
 function showPage(p){document.querySelectorAll('.page-overlay').forEach(el=>el.classList.remove('active'));if(p!=='home'){var el=document.getElementById('page'+p.charAt(0).toUpperCase()+p.slice(1));if(el)el.classList.add('active');}document.querySelectorAll('.screen .tabbar .tab').forEach(function(tab){var oc=tab.getAttribute('onclick')||'';var m=oc.match(/showPage\('(\w+)'\)/);if(m)tab.classList.toggle('active',m[1]===p);});if(p==='report')setTimeout(animateChart,80);}
 function openSubPage(id){var el=document.getElementById(id);if(!el)return;el.style.display='';el.style.pointerEvents='auto';el.classList.add('active');}
 function closeSubPage(id){var el=document.getElementById(id);if(!el)return;el.classList.remove('active');el.style.pointerEvents='none';}
-function selectFreq(idx){document.querySelectorAll('.freq-row').forEach(function(r,i){var chk=r.querySelector('.freq-check');var img=r.querySelector('img:first-child');var isSel=i===idx;if(chk)chk.style.opacity=isSel?'1':'0';if(img)img.style.filter=isSel?'invert(56%) sepia(68%) saturate(400%) hue-rotate(148deg)':'invert(60%) sepia(0%) saturate(0%)';});}
+function selectFreq(idx){document.querySelectorAll('.freq-row').forEach(function(r,i){var chk=r.querySelector('.freq-check');var icon=r.querySelector('.freq-icon');var isSel=i===idx;r.classList.toggle('selected',isSel);if(chk)chk.style.opacity=isSel?'1':'0';if(icon)icon.style.filter=isSel?'invert(56%) sepia(68%) saturate(400%) hue-rotate(148deg)':'invert(60%) sepia(0%) saturate(0%)';});}
 function openKeywordMgmt(){var el=document.getElementById('pageKeywordMgmt');if(el)el.classList.add('active');}
 function closeKeywordMgmt(){var el=document.getElementById('pageKeywordMgmt');if(el)el.classList.remove('active');}
 function openShare(){var p=document.getElementById('sharePopup');if(!p)return;var f1=p.querySelector('.share-dialog');var f2=document.getElementById('shareF2');if(f1)f1.style.display='block';if(f2)f2.classList.remove('active');p.classList.add('open');clearTimeout(p._t);p._t=setTimeout(function(){if(f1)f1.style.display='none';if(f2)f2.classList.add('active');},1500);}
