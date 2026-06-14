@@ -133,10 +133,11 @@
 .perm-card-body{flex:1;min-width:0}
 .perm-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .perm-card-title{font-size:18px;font-weight:700;color:rgb(17,24,39);letter-spacing:-.02em}
-.perm-tgl{width:40px;height:24px;border-radius:9999px;flex:none;position:relative;cursor:pointer}
-.perm-tgl::after{content:'';position:absolute;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s}
-.perm-tgl.on{background:var(--teal-500)}.perm-tgl.on::after{left:19px}
-.perm-tgl.off{background:rgb(209,213,219)}.perm-tgl.off::after{left:3px}
+.perm-tgl-cb{display:none!important}
+.perm-tgl{width:40px;height:24px;border-radius:9999px;flex:none;position:relative;background:rgb(209,213,219);transition:background .2s}
+.perm-tgl::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .2s}
+.perm-tgl-cb:checked+.perm-tgl{background:#24CDC5}
+.perm-tgl-cb:checked+.perm-tgl::after{left:19px}
 .perm-cta:disabled{background:rgb(209,213,219);cursor:not-allowed;opacity:.7}
 .perm-card-desc{font-size:16px;color:rgb(107,114,128);letter-spacing:-.02em;line-height:1.7}
 .perm-encrypt-note{font-size:12px;font-weight:500;color:rgb(133,146,155);letter-spacing:-.03em;text-align:center}
@@ -218,35 +219,35 @@
           <div class="perm-card">
           <div class="perm-card-icon"><img src="assets/perm-screen.svg" style="width:20px;height:20px;filter:invert(30%) sepia(15%) saturate(400%) hue-rotate(160deg)" alt=""/></div>
           <div class="perm-card-body">
-            <div class="perm-card-head"><span class="perm-card-title">화면 콘텐츠 접근</span><div class="perm-tgl off" onclick="togglePerm(this)"></div></div>
+            <label class="perm-card-head"><span class="perm-card-title">화면 콘텐츠 접근</span><input type="checkbox" class="perm-tgl-cb" onchange="checkPermCta()"><span class="perm-tgl"></span></label>
             <div class="perm-card-desc">실시간으로 콘텐츠를 탐지하고 필터링하기 위해 필요해요.</div>
           </div>
         </div>
           <div class="perm-card">
           <div class="perm-card-icon"><img src="assets/perm-notif.svg" style="width:20px;height:20px;filter:invert(30%) sepia(15%) saturate(400%) hue-rotate(160deg)" alt=""/></div>
           <div class="perm-card-body">
-            <div class="perm-card-head"><span class="perm-card-title">알림 권한</span><div class="perm-tgl off" onclick="togglePerm(this)"></div></div>
+            <label class="perm-card-head"><span class="perm-card-title">알림 권한</span><input type="checkbox" class="perm-tgl-cb" onchange="checkPermCta()"><span class="perm-tgl"></span></label>
             <div class="perm-card-desc">위험 콘텐츠 탐지 알림 및 주간 리포트를 보내드려요.</div>
           </div>
         </div>
           <div class="perm-card">
           <div class="perm-card-icon"><img src="assets/perm-usage.svg" style="width:20px;height:20px;filter:invert(30%) sepia(15%) saturate(400%) hue-rotate(160deg)" alt=""/></div>
           <div class="perm-card-body">
-            <div class="perm-card-head"><span class="perm-card-title">사용 패턴 분석</span><div class="perm-tgl off" onclick="togglePerm(this)"></div></div>
+            <label class="perm-card-head"><span class="perm-card-title">사용 패턴 분석</span><input type="checkbox" class="perm-tgl-cb" onchange="checkPermCta()"><span class="perm-tgl"></span></label>
             <div class="perm-card-desc">개인화된 필터링 성능 향상 및 리포트 제공을 위해 사용돼요.</div>
           </div>
         </div>
           <div class="perm-card">
           <div class="perm-card-icon"><img src="assets/perm-camera.svg" style="width:20px;height:20px;filter:invert(30%) sepia(15%) saturate(400%) hue-rotate(160deg)" alt=""/></div>
           <div class="perm-card-body">
-            <div class="perm-card-head"><span class="perm-card-title">카메라 접근</span><div class="perm-tgl off" onclick="togglePerm(this)"></div></div>
+            <label class="perm-card-head"><span class="perm-card-title">카메라 접근</span><input type="checkbox" class="perm-tgl-cb" onchange="checkPermCta()"><span class="perm-tgl"></span></label>
             <div class="perm-card-desc">이미지 및 QR 코드 분석을 통한 보안 강화를 위해 필요해요.</div>
           </div>
         </div>
           <div class="perm-card">
           <div class="perm-card-icon"><img src="assets/perm-mic.svg" style="width:20px;height:20px;filter:invert(30%) sepia(15%) saturate(400%) hue-rotate(160deg)" alt=""/></div>
           <div class="perm-card-body">
-            <div class="perm-card-head"><span class="perm-card-title">마이크 접근</span><div class="perm-tgl off" onclick="togglePerm(this)"></div></div>
+            <label class="perm-card-head"><span class="perm-card-title">마이크 접근</span><input type="checkbox" class="perm-tgl-cb" onchange="checkPermCta()"><span class="perm-tgl"></span></label>
             <div class="perm-card-desc">음성 콘텐츠 내 유해 요소를 분석하기 위해 필요해요.</div>
           </div>
         </div>
@@ -574,13 +575,12 @@ function closeVerdict(){var v=document.getElementById('verdictOverlay');if(v)v.c
   },2400);
 })();
 
-function togglePerm(el){el.classList.toggle('on');el.classList.toggle('off');checkPermCta();}
-function checkPermCta(){var allOn=document.querySelectorAll('#permPage .perm-tgl.off').length===0;var btn=document.getElementById('permCtaBtn');if(btn)btn.disabled=!allOn;}
+function checkPermCta(){var allOn=document.querySelectorAll('#permPage .perm-tgl-cb:not(:checked)').length===0;var btn=document.getElementById('permCtaBtn');if(btn)btn.disabled=!allOn;}
 function openPermissions(){var p=document.getElementById('permPage');if(!p)return;p.style.display='flex';p.style.transform='translateX(0)';p.style.pointerEvents='auto';p.classList.add('active');}
 function closePermissions(){var p=document.getElementById('permPage');if(!p)return;p.style.display='none';p.style.transform='translateX(100%)';p.classList.remove('active');}
 // Toggle interaction
 document.addEventListener('click',function(e){
-  var t=e.target.closest('.tgl,.perm-tgl');
+  var t=e.target.closest('.tgl');
   if(!t)return;
   if(t.classList.contains('on')){t.classList.replace('on','off');}
   else{t.classList.replace('off','on');}
