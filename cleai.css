@@ -398,7 +398,7 @@ section{padding:64px 0 8px}
 .tag-add{display:inline-flex;align-items:center;height:32px;border-radius:var(--r-pill);background:var(--n-150);padding:0 12px;font-size:12px;font-weight:500;color:var(--n-700);letter-spacing:-.03em;gap:5px;cursor:pointer}
 .tag-add svg{width:10px;height:10px;flex:none}
 
-.strength-card{background:var(--n-0);border-radius:var(--r-sm);box-shadow:var(--sh-card);padding:24px;width:312px;max-width:100%}
+.strength-card{background:var(--n-0);border-radius:var(--r-sm);box-shadow:var(--sh-card);padding:24px;width:100%}
 .strength-card .sc-label{font-size:18px;font-weight:700;color:var(--n-950);letter-spacing:-.02em;margin-bottom:20px}
 .strength-track{position:relative;height:8px;border-radius:var(--r-pill);background:var(--n-150);margin:16px 0}
 .strength-fill{position:absolute;left:0;top:0;height:100%;width:50%;border-radius:var(--r-pill);background:var(--teal-500)}
