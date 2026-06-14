@@ -254,7 +254,7 @@
         <button class="perm-cta" onclick="completePerm()">설정 완료</button>
       </div>
     </div>
-      <div class="appbar"><div class="ab-brand"><img src="assets/app-icon.png" style="width:34px;height:34px;border-radius:9px;flex:none" alt="CleAI"/><span class="ab-wm">CleAI</span></div><span class="chip-version">v.1.7.3</span></div><div class="screen-body"><div class="pg"><div class="banner-tap" onclick="openReels()" role="button" tabindex="0"><div class="card-mock">
+      <div class="appbar"><div class="ab-brand"><img src="assets/app-icon.png" style="width:34px;height:34px;border-radius:9px;flex:none" alt="CleAI"/><span class="ab-wm">CleAI</span></div><span class="chip-version">v.1.7.3</span></div><div class="screen-body"><div class="pg"><div class="banner-tap" onclick="openReels()" role="button" tabindex="-1"><div class="card-mock">
             <div class="banner">
               <div class="bn-eye"><img class="spk" src="assets/sparkle.svg" style="filter:brightness(0) invert(1)" alt="" /> CleAI LIVE</div>
               <div class="bn-title">AI 필터링 작동 중</div>
@@ -539,8 +539,9 @@ function closeKeywordMgmt(){var el=document.getElementById('pageKeywordMgmt');if
 function openShare(){var p=document.getElementById('sharePopup');if(!p)return;var f1=p.querySelector('.share-dialog');var f2=document.getElementById('shareF2');if(f1)f1.style.display='block';if(f2)f2.classList.remove('active');p.classList.add('open');clearTimeout(p._t);p._t=setTimeout(function(){if(f1)f1.style.display='none';if(f2)f2.classList.add('active');},1500);}
 function closeShare(){var p=document.getElementById('sharePopup');if(!p)return;p.classList.remove('open');clearTimeout(p._t);var f1=p.querySelector('.share-dialog');var f2=document.getElementById('shareF2');if(f1)f1.style.display='block';if(f2)f2.classList.remove('active');}
 var _splashGoneTimer=null;
-function _splashActive(){var s=document.getElementById('splashOverlay');return s&&!s.classList.contains('gone');}
-function openReels(){if(_splashActive())return;var o=document.getElementById('reelsOverlay');if(!o)return;o.classList.remove('loaded');o.classList.add('open');clearTimeout(o._t);o._t=setTimeout(function(){o.classList.add('loaded');},1600);}
+var _permDoneAt=-9999;
+function _overlayAllowed(){if(Date.now()-_permDoneAt<2500)return false;var s=document.getElementById('splashOverlay');return !s||s.classList.contains('gone');}
+function openReels(){if(!_overlayAllowed())return;var o=document.getElementById('reelsOverlay');if(!o)return;o.classList.remove('loaded');o.classList.add('open');clearTimeout(o._t);o._t=setTimeout(function(){o.classList.add('loaded');},1600);}
 function closeReels(e){if(e)e.stopPropagation();var o=document.getElementById('reelsOverlay');if(o){o.classList.remove('open');['bsOverlay','verdictOverlay'].forEach(id=>{var el=document.getElementById(id);if(el)el.classList.remove('open');});}}
 // Dot animation for loading text
 function startDotAnim(){
@@ -554,7 +555,7 @@ function stopDotAnim(){
   var el=document.querySelector('.bs-analyzing-title');
   if(el&&el._dotAnim){clearInterval(el._dotAnim);el._dotAnim=null;el.textContent='콘텐츠 분석 중.';}
 }
-function openBs(){if(_splashActive())return;var bs=document.getElementById('bsOverlay');if(!bs)return;document.getElementById('bsLoading').classList.remove('bs-hidden');document.getElementById('bsResults').classList.add('bs-hidden');bs.classList.add('open');startDotAnim();clearTimeout(bs._t);bs._t=setTimeout(()=>{stopDotAnim();document.getElementById('bsLoading').classList.add('bs-hidden');document.getElementById('bsResults').classList.remove('bs-hidden');},2000);}
+function openBs(){if(!_overlayAllowed())return;var bs=document.getElementById('bsOverlay');if(!bs)return;document.getElementById('bsLoading').classList.remove('bs-hidden');document.getElementById('bsResults').classList.add('bs-hidden');bs.classList.add('open');startDotAnim();clearTimeout(bs._t);bs._t=setTimeout(()=>{stopDotAnim();document.getElementById('bsLoading').classList.add('bs-hidden');document.getElementById('bsResults').classList.remove('bs-hidden');},2000);}
 function closeBs(e){if(e)e.stopPropagation();var bs=document.getElementById('bsOverlay');if(bs)bs.classList.remove('open');}
 function toggleBsDetail(){var d=document.getElementById('bsDetail');var b=document.getElementById('bsAccordionBtn');if(d){d.classList.toggle('open');b.classList.toggle('open');}}
 function openVerdict(){var v=document.getElementById('verdictOverlay');if(v)v.classList.add('open');}
@@ -584,6 +585,7 @@ document.addEventListener('click',function(e){
   }
 });
 function completePerm(){
+  _permDoneAt=Date.now();
   if(_splashGoneTimer){clearTimeout(_splashGoneTimer);_splashGoneTimer=null;}
   var p=document.getElementById('permPage');var l=document.getElementById('loginPage');
   var s=document.getElementById('splashOverlay');
