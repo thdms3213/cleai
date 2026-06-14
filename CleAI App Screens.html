@@ -584,6 +584,9 @@ document.addEventListener('click',function(e){
 function completePerm(){
   var p=document.getElementById('permPage');var l=document.getElementById('loginPage');
   var s=document.getElementById('splashOverlay');
+  // 스플래시를 먼저 paint → 홈 화면이 터치를 받기 전에 완전히 가림
+  if(s){s.classList.remove('gone','hide');s.style.opacity='1';void s.offsetHeight;}
+  // 스플래시가 화면을 덮은 뒤 퍼미션/로그인 페이지 제거
   if(p){p.style.display='none';p.classList.remove('active');}
   if(l){l.style.display='none';l.classList.remove('active');}
   ['reelsOverlay','bsOverlay','verdictOverlay'].forEach(function(id){
@@ -591,9 +594,6 @@ function completePerm(){
   });
   document.querySelectorAll('.page-overlay').forEach(function(el){el.classList.remove('active');});
   if(s){
-    s.classList.remove('gone','hide');
-    s.style.opacity='1';
-    void s.offsetHeight;
     setTimeout(function(){s.classList.add('hide');setTimeout(function(){s.classList.add('gone');},600);},800);
   }
 }
