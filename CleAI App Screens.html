@@ -542,7 +542,7 @@ var _splashGoneTimer=null;
 var _permDoneAt=-9999;
 function _overlayAllowed(){if(Date.now()-_permDoneAt<2500)return false;var s=document.getElementById('splashOverlay');return !s||s.classList.contains('gone');}
 function openReels(){if(!_overlayAllowed())return;var o=document.getElementById('reelsOverlay');if(!o)return;o.style.display='';o.classList.remove('loaded');o.classList.add('open');clearTimeout(o._t);o._t=setTimeout(function(){o.classList.add('loaded');},1600);}
-function closeReels(e){if(e)e.stopPropagation();var o=document.getElementById('reelsOverlay');if(o){o.classList.remove('open');['bsOverlay','verdictOverlay'].forEach(id=>{var el=document.getElementById(id);if(el)el.classList.remove('open');});}}
+function closeReels(e){if(e)e.stopPropagation();var o=document.getElementById('reelsOverlay');if(o){o.classList.remove('open');o.style.display='none';['bsOverlay','verdictOverlay'].forEach(id=>{var el=document.getElementById(id);if(el)el.classList.remove('open');});}}
 // Dot animation for loading text
 function startDotAnim(){
   var el=document.querySelector('.bs-analyzing-title');
