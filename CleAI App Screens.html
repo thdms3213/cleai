@@ -540,8 +540,9 @@ function openShare(){var p=document.getElementById('sharePopup');if(!p)return;va
 function closeShare(){var p=document.getElementById('sharePopup');if(!p)return;p.classList.remove('open');clearTimeout(p._t);var f1=p.querySelector('.share-dialog');var f2=document.getElementById('shareF2');if(f1)f1.style.display='block';if(f2)f2.classList.remove('active');}
 var _splashGoneTimer=null;
 var _permDoneAt=-9999;
+function _dbg(msg){var d=document.getElementById('_dbg');if(!d){d=document.createElement('div');d.id='_dbg';d.style.cssText='position:fixed;top:60px;left:8px;right:8px;background:rgba(0,0,0,.9);color:#0f0;font:10px monospace;padding:6px 8px;z-index:99999;border-radius:8px;max-height:180px;overflow-y:auto;pointer-events:none';document.body.appendChild(d);}var ln=document.createElement('div');var s=document.getElementById('splashOverlay');var sState=s?(s.classList.contains('gone')?'GONE':s.classList.contains('hide')?'HIDE':'SHOW'):'NULL';ln.textContent=new Date().toISOString().slice(11,19)+' [splash:'+sState+' perm:'+(Date.now()-_permDoneAt)+'ms] '+msg;d.appendChild(ln);d.scrollTop=d.scrollHeight;}
 function _overlayAllowed(){if(Date.now()-_permDoneAt<2500)return false;var s=document.getElementById('splashOverlay');return !s||s.classList.contains('gone');}
-function openReels(){if(!_overlayAllowed())return;var o=document.getElementById('reelsOverlay');if(!o)return;o.classList.remove('loaded');o.classList.add('open');clearTimeout(o._t);o._t=setTimeout(function(){o.classList.add('loaded');},1600);}
+function openReels(){_dbg('openReels → allowed='+_overlayAllowed());if(!_overlayAllowed())return;var o=document.getElementById('reelsOverlay');if(!o)return;o.classList.remove('loaded');o.classList.add('open');clearTimeout(o._t);o._t=setTimeout(function(){o.classList.add('loaded');},1600);}
 function closeReels(e){if(e)e.stopPropagation();var o=document.getElementById('reelsOverlay');if(o){o.classList.remove('open');['bsOverlay','verdictOverlay'].forEach(id=>{var el=document.getElementById(id);if(el)el.classList.remove('open');});}}
 // Dot animation for loading text
 function startDotAnim(){
@@ -585,7 +586,7 @@ document.addEventListener('click',function(e){
   }
 });
 function completePerm(){
-  _permDoneAt=Date.now();
+  _permDoneAt=Date.now();_dbg('completePerm START');
   if(_splashGoneTimer){clearTimeout(_splashGoneTimer);_splashGoneTimer=null;}
   var p=document.getElementById('permPage');var l=document.getElementById('loginPage');
   var s=document.getElementById('splashOverlay');
@@ -602,7 +603,7 @@ function completePerm(){
       s.classList.add('hide');
       _splashGoneTimer=setTimeout(function(){
         _splashGoneTimer=null;
-        s.classList.add('gone');
+        s.classList.add('gone');_dbg('splash GONE added');
       },600);
     },800);
   }
