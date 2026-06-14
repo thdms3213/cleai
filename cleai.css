@@ -222,7 +222,7 @@ section{padding:64px 0 8px}
 .chip-required .ri{width:18px;height:18px;border-radius:50%;background:var(--n-500);color:#fff;display:grid;place-items:center;font-size:11px;font-style:italic;font-weight:700}
 
 /* — Cards — */
-.card-mock{width:312px;max-width:100%}
+.card-mock{width:100%}
 .stat-card{background:var(--n-0);border-radius:var(--r-md);box-shadow:var(--sh-card);padding:24px;text-align:center}
 .stat-card .sc-title{font-size:18px;font-weight:700;color:var(--n-500);letter-spacing:-.02em}
 .stat-card .sc-num{font-size:48px;font-weight:700;color:var(--n-950);letter-spacing:-.01em;line-height:1.2;margin-top:10px}
